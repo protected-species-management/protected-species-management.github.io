@@ -9,13 +9,13 @@
 Source:
 [`DESCRIPTION`](https://github.com/protected-species-management/operating-model/blob/main/DESCRIPTION)
 
-Edwards CTT (2026). *om: Operating model*. R package version 0.3.2,
+Edwards CTT (2026). *om: Operating model*. R package version 0.3.3,
 <https://github.com/protected-species-management/operating-model/om>.
 
     @Manual{,
       title = {om: Operating model},
       author = {Charles T T Edwards},
       year = {2026},
-      note = {R package version 0.3.2},
+      note = {R package version 0.3.3},
       url = {https://github.com/protected-species-management/operating-model/om},
     }

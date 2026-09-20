@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">om</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +37,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/om_demo.html">Operating model demonstration</a></li>
+    <li><a class="dropdown-item" href="articles/om_hdo.html">Operating model setup for Hector's dolphin</a></li>
   </ul>
 </li>
       </ul>
@@ -69,7 +70,10 @@
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span></code></pre></div>
 <p>Then install <code>om</code> directly from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># remotes command to get om from GitHub</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"protected-species-management/operating-model"</span>) </span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"protected-species-management/operating-model"</span>, <span class="at">subdir =</span> <span class="st">"om"</span>) </span></code></pre></div>
+<p>The <code>om</code> package uses <a href="https://github.com/kaskr/RTMB" class="external-link">RTMB</a>, which can be installed from CRAN using:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Install RTMB</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"RTMB"</span>)</span></code></pre></div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">

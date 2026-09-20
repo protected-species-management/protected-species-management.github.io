@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">om</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/om_demo.html">Operating model demonstration</a></li>
+    <li><a class="dropdown-item" href="../articles/om_hdo.html">Operating model setup for Hector's dolphin</a></li>
   </ul>
 </li>
       </ul>
@@ -69,7 +70,7 @@ Edwards</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/protected-species-management/operating-model/om">om</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: RTMB</span></span>
-<span><span class="co">#&gt; om version 0.3.2 (19-Sep-2026)</span></span>
+<span><span class="co">#&gt; om version 0.3.3 (20-Sep-2026)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'om'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
@@ -78,51 +79,73 @@ Edwards</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
-<p>Setup om-class object for age-based operating model</p>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<p>Setup operating model class object, assuming 3 samples from the input
+life-history distribution and a default projection period of 200
+years.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/om-class.html">om</a></span><span class="op">(</span>ages <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">12</span>, samples <span class="op">=</span> <span class="fl">3L</span>, time <span class="op">=</span> <span class="fl">201</span><span class="op">)</span></span></code></pre></div>
 <p>Set-up list of parameter distributions required for population
 dynamics function:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/load_pars.html">load_pars</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">'s'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2</span>, <span class="fl">0.2</span><span class="op">)</span>, density <span class="op">=</span> <span class="st">"logitnormal"</span>, name <span class="op">=</span> <span class="st">"adult survivorship"</span><span class="op">)</span>,</span>
-<span>    <span class="st">'b'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0</span>, <span class="fl">0.2</span><span class="op">)</span>, density <span class="op">=</span> <span class="st">"lognormal"</span>, name <span class="op">=</span> <span class="st">"female fecundity"</span><span class="op">)</span>,</span>
-<span>    <span class="st">'m'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">4</span>, name <span class="op">=</span> <span class="st">"age at maturity"</span><span class="op">)</span>,</span>
-<span>    <span class="st">'l'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">0.7</span>, name <span class="op">=</span> <span class="st">"immature survivorship multiplier"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>The intrinsic growth rate is calculated automatically when parameters
-are assigned:</p>
+<code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/load_pars.html">load_pars</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2</span>, <span class="fl">0.2</span><span class="op">)</span>, density <span class="op">=</span> <span class="st">"logitnormal"</span>, name <span class="op">=</span> <span class="st">"adult survivorship"</span><span class="op">)</span>,</span>
+<span>        b <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.2</span><span class="op">)</span>, density <span class="op">=</span> <span class="st">"lognormal"</span>, name <span class="op">=</span> <span class="st">"female fecundity"</span><span class="op">)</span>, m <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>            name <span class="op">=</span> <span class="st">"age at maturity"</span><span class="op">)</span>, l <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">0.7</span>, name <span class="op">=</span> <span class="st">"immature survivorship multiplier"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Each parameter is stored as a <code>distribution</code> class object
+and assigned to the <code>om_object@pars</code> slot. A simple plotting
+function can be used to quickly visualise the parameter input
+distributions. For example:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/lambda.html">lambda</a></span><span class="op">(</span><span class="va">om_object</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">om_object</span><span class="op">@</span><span class="va">pars</span><span class="op">$</span><span class="va">s</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fig/om-examples-unnamed-chunk-6-1.png" class="r-plt" alt="" width="576"></p>
-<p>The intrinsic growth can be assumed to be the maximum, or an
-alternative can be supplied:</p>
+<p>The intrinsic growth rate is calculated automatically when parameters
+are assigned and stored in <code>om_object@pars$r</code>. There exists a
+<code><a href="../reference/lambda.html">lambda()</a></code> function for extracting the intrinsic growth on
+either the natural or logarithmic scale. For example:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/load_rmax.html">load_rmax</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Assumed to be a zero-truncated normal:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/lambda.html">lambda</a></span><span class="op">(</span><span class="va">om_object</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fig/om-examples-unnamed-chunk-7-1.png" class="r-plt" alt="" width="576"></p>
+<p>The intrinsic growth can be assumed to be the maximum, or an
+alternative can be supplied. The default behaviour assigns
+<code>om_object@pars$r</code> to <code>om_object@pars$rmax</code> but
+truncates the distribution at zero:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">om_object</span><span class="op">@</span><span class="va">pars</span><span class="op">$</span><span class="va">rmax</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-8-1.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/load_pars.html">update_pars</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">'o'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span>, name <span class="op">=</span> <span class="st">"age at observation"</span><span class="op">)</span>,</span>
-<span>    <span class="st">'v'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">4</span>, name <span class="op">=</span> <span class="st">"age at selectivity"</span><span class="op">)</span>,</span>
-<span>    <span class="st">'K'</span> <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span>, name <span class="op">=</span> <span class="st">"carrying capacity"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/load_rmax.html">load_rmax</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># load uncertainty</span></span>
-<span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/load_cvs.html">load_cvs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">'survivorship'</span> <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>    <span class="st">'birth'</span>        <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>    <span class="st">'observation'</span>  <span class="op">=</span> <span class="fl">0.00</span>,</span>
-<span>    <span class="st">'mortality'</span>    <span class="op">=</span> <span class="fl">0.00</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">om_object</span><span class="op">@</span><span class="va">pars</span><span class="op">$</span><span class="va">rmax</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fig/om-examples-unnamed-chunk-8-1.png" class="r-plt" alt="" width="576"></p>
+<p>To estimate the reference points, we are also required to load the
+observation and selectivity paramter distributions:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/load_pars.html">update_pars</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>o <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span>, name <span class="op">=</span> <span class="st">"age at observation"</span><span class="op">)</span>, v <span class="op">=</span> <span class="fu"><a href="../reference/distribution-class.html">distribution</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>        name <span class="op">=</span> <span class="st">"age at selectivity"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>By default the 1+ carrying capacity is set to one:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">om_object</span><span class="op">@</span><span class="va">pars</span><span class="op">$</span><span class="va">K</span></span></code></pre></div>
+<p>For the projections, uncertainty is required:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load uncertainty</span></span>
+<span><span class="va">om_object</span> <span class="op">&lt;-</span> <span class="va">om_object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/load_cvs.html">load_cvs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>survivorship <span class="op">=</span> <span class="fl">0.05</span>, birth <span class="op">=</span> <span class="fl">0.01</span>, observation <span class="op">=</span> <span class="fl">0</span>, mortality <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="fixed-shape">Fixed shape<a class="anchor" aria-label="anchor" href="#fixed-shape"></a>
+</h2>
+<p>Given the input parameter distributions, the shape parameter
+determines the depeletion at MNPL. This can be illustrated using a fixed
+shape value.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># assume shape</span></span>
 <span><span class="fu"><a href="../reference/shape.html">shape</a></span><span class="op">(</span><span class="va">om_object</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span></span>
 <span><span class="co"># deterministic ref. points</span></span>
 <span><span class="va">om_object0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rp.html">rp</a></span><span class="op">(</span><span class="va">om_object</span>, stochastic <span class="op">=</span> <span class="cn">FALSE</span>, time <span class="op">=</span> <span class="fl">200L</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/targets.html">targets</a></span><span class="op">(</span><span class="va">om_object0</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $captures</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
@@ -146,37 +169,104 @@ alternative can be supplied:</p>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      1 0.533</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      2 0.528</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3 0.533</span></span>
-<span></span>
-<span><span class="va">dfr0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spf.html">spf</a></span><span class="op">(</span><span class="va">om_object0</span>, harvest_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.00</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="../reference/targets.html">targets</a></span><span class="op">(</span><span class="va">om_object0</span><span class="op">)</span><span class="op">$</span><span class="va">harvest_rate</span><span class="op">$</span><span class="va">value</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">dfr1</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">om_object</span><span class="op">@</span><span class="va">samples</span><span class="op">)</span>, harvest_rate <span class="op">=</span> <span class="va">om_object0</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">harvest_rate</span>, captures <span class="op">=</span> <span class="va">om_object0</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">captures</span>, depletion <span class="op">=</span> <span class="va">om_object0</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">depletion</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">harvest_rate</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-10-1.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">depletion</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-10-2.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3 0.533</span></span></code></pre></div>
+<p>The <code><a href="../reference/spf.html">spf()</a></code> function can be useful for plotting the
+surplus production functions being assumed by the model:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dfr0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spf.html">spf</a></span><span class="op">(</span><span class="va">om_object0</span>, harvest_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="../reference/targets.html">targets</a></span><span class="op">(</span><span class="va">om_object0</span><span class="op">)</span><span class="op">$</span><span class="va">harvest_rate</span><span class="op">$</span><span class="va">value</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dfr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">om_object</span><span class="op">@</span><span class="va">samples</span><span class="op">)</span>, harvest_rate <span class="op">=</span> <span class="va">om_object0</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">harvest_rate</span>,</span>
+<span>    captures <span class="op">=</span> <span class="va">om_object0</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">captures</span>, depletion <span class="op">=</span> <span class="va">om_object0</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">depletion</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">harvest_rate</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fig/om-examples-unnamed-chunk-13-1.png" class="r-plt" alt="" width="576"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">depletion</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fig/om-examples-unnamed-chunk-13-2.png" class="r-plt" alt="" width="576"></p>
+<p>When performing a stochastic projection, uncertainty is a consequence
+of the life-history parameter distributions only. By default,
+projections take place assuming a harvest rate equal the harvest rate at
+MNPL:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">om_object0</span><span class="op">@</span><span class="va">harvest_rate</span></span>
+<span><span class="co">#&gt; function (object, numbers, selectivity, pst, i) </span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;     ifelse(all(is.na(object@targets$harvest_rate)), 0, object@targets$harvest_rate[i])</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x563327595b00&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># population dynamics</span></span>
 <span><span class="va">om_object0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdyn.html">pdyn</a></span><span class="op">(</span><span class="va">om_object0</span>, stochastic <span class="op">=</span> <span class="cn">FALSE</span>, initial_depletion <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/dynplot.html">dynplot</a></span><span class="op">(</span><span class="va">om_object0</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-11-1.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co">#diagnostics(om_object0)</span></span>
-<span><span class="co">#objectives(om_object0)</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="fig/om-examples-unnamed-chunk-15-1.png" class="r-plt" alt="" width="576"></p>
+<p>Diagnostics are available per sample:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/targets.html">diagnostics</a></span><span class="op">(</span><span class="va">om_object0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $captures</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 600 × 4</span></span></span>
+<span><span class="co">#&gt;    sample iteration  time   value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1              1     0 0.002<span style="text-decoration: underline;">34</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2              1     0 0.002<span style="text-decoration: underline;">08</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3              1     0 0.002<span style="text-decoration: underline;">48</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1              1     1 0.002<span style="text-decoration: underline;">41</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2              1     1 0.002<span style="text-decoration: underline;">13</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 3              1     1 0.002<span style="text-decoration: underline;">56</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1              1     2 0.002<span style="text-decoration: underline;">47</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2              1     2 0.002<span style="text-decoration: underline;">18</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 3              1     2 0.002<span style="text-decoration: underline;">63</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1              1     3 0.002<span style="text-decoration: underline;">52</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 590 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $depletion</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 603 × 4</span></span></span>
+<span><span class="co">#&gt;    sample iteration  time  value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1              1     0 0.100<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2              1     0 0.100<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3              1     0 0.100<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1              1     1 0.102 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2              1     1 0.102 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 3              1     1 0.102 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1              1     2 0.104 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2              1     2 0.103 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 3              1     2 0.104 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1              1     3 0.106 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 593 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $harvest_rate</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 600 × 4</span></span></span>
+<span><span class="co">#&gt;    sample iteration  time  value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1              1     0 0.041<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2              1     0 0.033<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3              1     0 0.038<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1              1     1 0.041<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2              1     1 0.033<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 3              1     1 0.038<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1              1     2 0.041<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2              1     2 0.033<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 3              1     2 0.038<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1              1     3 0.041<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 590 more rows</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="estimated-shape">Estimated shape<a class="anchor" aria-label="anchor" href="#estimated-shape"></a>
+</h2>
+<p>The shape can be estimated per life-history sample using the
+<code>shape</code> function, in which case the desired target depletion
+must be specified:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># estimate shape for assumed d_mnpl assumption</span></span>
 <span><span class="va">om_object1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/shape.html">shape</a></span><span class="op">(</span><span class="va">om_object</span>, depletion <span class="op">=</span> <span class="fl">0.7</span>, stochastic <span class="op">=</span> <span class="cn">FALSE</span>, time <span class="op">=</span> <span class="fl">200L</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/shape.html">shape</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 4.109308 4.255719 4.117766</span></span>
-<span></span>
-<span><span class="co"># deterministic ref. points</span></span>
+<span><span class="co">#&gt; [1] 4.109308 4.255719 4.117766</span></span></code></pre></div>
+<p>As before reference points can be estimated and the surplus
+production function(s) plotted:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># deterministic ref. points</span></span>
 <span><span class="va">om_object1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rp.html">rp</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/targets.html">targets</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $captures</span></span>
@@ -203,28 +293,75 @@ alternative can be supplied:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      2 0.700</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      3 0.700</span></span>
 <span></span>
-<span><span class="va">dfr0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spf.html">spf</a></span><span class="op">(</span><span class="va">om_object1</span>, harvest_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.00</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="../reference/targets.html">targets</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span><span class="op">$</span><span class="va">harvest_rate</span><span class="op">$</span><span class="va">value</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">dfr1</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">om_object</span><span class="op">@</span><span class="va">samples</span><span class="op">)</span>, harvest_rate <span class="op">=</span> <span class="va">om_object1</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">harvest_rate</span>, captures <span class="op">=</span> <span class="va">om_object1</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">captures</span>, depletion <span class="op">=</span> <span class="va">om_object1</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">depletion</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">harvest_rate</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-12-1.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">depletion</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-12-2.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">om_object1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdyn.html">pdyn</a></span><span class="op">(</span><span class="va">om_object1</span>, stochastic <span class="op">=</span> <span class="cn">FALSE</span>, initial_depletion <span class="op">=</span> <span class="fl">0.3</span>, use_rmax <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">dfr0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spf.html">spf</a></span><span class="op">(</span><span class="va">om_object1</span>, harvest_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="../reference/targets.html">targets</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span><span class="op">$</span><span class="va">harvest_rate</span><span class="op">$</span><span class="va">value</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dfr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">om_object</span><span class="op">@</span><span class="va">samples</span><span class="op">)</span>, harvest_rate <span class="op">=</span> <span class="va">om_object1</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">harvest_rate</span>,</span>
+<span>    captures <span class="op">=</span> <span class="va">om_object1</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">captures</span>, depletion <span class="op">=</span> <span class="va">om_object1</span><span class="op">@</span><span class="va">targets</span><span class="op">$</span><span class="va">depletion</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">harvest_rate</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">harvest_rate</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fig/om-examples-unnamed-chunk-18-1.png" class="r-plt" alt="" width="576"></p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr0</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>, y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">depletion</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fig/om-examples-unnamed-chunk-18-2.png" class="r-plt" alt="" width="576"></p>
+<p>Projection confirms that the population will converge on the
+depletion at MNPL specified during estimate of the shape:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">om_object1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdyn.html">pdyn</a></span><span class="op">(</span><span class="va">om_object1</span>, stochastic <span class="op">=</span> <span class="cn">FALSE</span>, initial_depletion <span class="op">=</span> <span class="fl">0.3</span>, use_rmax <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/dynplot.html">dynplot</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fig/om-examples-unnamed-chunk-12-3.png" class="r-plt" alt="" width="576"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p><img src="fig/om-examples-unnamed-chunk-19-1.png" class="r-plt" alt="" width="576"></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co">#diagnostics(om_object1)</span></span>
-<span><span class="co">#objectives(om_object1)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/targets.html">diagnostics</a></span><span class="op">(</span><span class="va">om_object1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $captures</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 600 × 4</span></span></span>
+<span><span class="co">#&gt;    sample iteration  time   value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1              1     0 0.011<span style="text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2              1     0 0.009<span style="text-decoration: underline;">97</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3              1     0 0.011<span style="text-decoration: underline;">8</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1              1     1 0.011<span style="text-decoration: underline;">3</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2              1     1 0.010<span style="text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 3              1     1 0.012<span style="text-decoration: underline;">0</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1              1     2 0.011<span style="text-decoration: underline;">4</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2              1     2 0.010<span style="text-decoration: underline;">2</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 3              1     2 0.012<span style="text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1              1     3 0.011<span style="text-decoration: underline;">5</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 590 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $depletion</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 603 × 4</span></span></span>
+<span><span class="co">#&gt;    sample iteration  time value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1              1     0 0.300</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2              1     0 0.300</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3              1     0 0.300</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1              1     1 0.303</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2              1     1 0.302</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 3              1     1 0.303</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1              1     2 0.306</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2              1     2 0.305</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 3              1     2 0.306</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1              1     3 0.309</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 593 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $harvest_rate</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 600 × 4</span></span></span>
+<span><span class="co">#&gt;    sample iteration  time  value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1              1     0 0.066<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2              1     0 0.053<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3              1     0 0.061<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1              1     1 0.066<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2              1     1 0.053<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 3              1     1 0.061<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1              1     2 0.066<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2              1     2 0.053<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 3              1     2 0.061<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1              1     3 0.066<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 590 more rows</span></span></span></code></pre></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
