@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/protected-species-management/operating-model/blob/HEAD/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/protected-species-management/operating-model/blob/main/DESCRIPTION)
 
 Edwards CTT (2026). *om: Operating model*. R package version 0.3.2,
 <https://github.com/protected-species-management/operating-model/om>.

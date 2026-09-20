@@ -1,7 +1,7 @@
 # Load coefficients of variation
 
 Load coefficients of variation into
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 class object for stochastic projection and (optionally) reference point
 estimation.
 

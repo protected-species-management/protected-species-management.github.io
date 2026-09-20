@@ -47,4 +47,4 @@ over-plotted.
 
 ## See also
 
-[`objplot`](https://github.com/protected-species-management/om/reference/objplot.md)
+[`objplot`](https://github.com/protected-species-management/operating-model/om/reference/objplot.md)

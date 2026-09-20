@@ -46,4 +46,4 @@ over-plotted, using the `labels` argument in the legend if supplied.
 
 ## See also
 
-[`dynplot`](https://github.com/protected-species-management/om/reference/dynplot.md)
+[`dynplot`](https://github.com/protected-species-management/operating-model/om/reference/dynplot.md)

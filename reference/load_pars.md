@@ -1,9 +1,9 @@
 # Load or update parameters
 
 Load or update parameters in
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 class object. Each parameter should be provided as a
-[`distribution-class`](https://github.com/protected-species-management/om/reference/distribution-class.md).
+[`distribution-class`](https://github.com/protected-species-management/operating-model/om/reference/distribution-class.md).
 
 ## Usage
 

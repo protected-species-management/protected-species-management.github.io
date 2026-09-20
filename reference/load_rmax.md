@@ -1,7 +1,7 @@
 # Load maximum intrinsic growth parameter
 
 Load \\r\_{max}\\ into the `pars` slot of an
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 class object.
 
 ## Usage

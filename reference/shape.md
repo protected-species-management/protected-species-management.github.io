@@ -72,4 +72,4 @@ shape(object) <- value
 
 ## See also
 
-[`rp`](https://github.com/protected-species-management/om/reference/rp.md)
+[`rp`](https://github.com/protected-species-management/operating-model/om/reference/rp.md)

@@ -1,7 +1,7 @@
 # Values calculated by the population dynamics function
 
 Extracts values generated internally for projection by
-[`pdyn`](https://github.com/protected-species-management/om/reference/pdyn.md).
+[`pdyn`](https://github.com/protected-species-management/operating-model/om/reference/pdyn.md).
 
 ## Usage
 

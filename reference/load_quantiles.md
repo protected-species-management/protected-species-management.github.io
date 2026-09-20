@@ -1,7 +1,7 @@
 # Load quantiles
 
 Load observation quantile into
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 class object for stochastic projection.
 
 ## Usage

@@ -38,7 +38,7 @@ sample(x, size = 1, replace = FALSE, ...)
 ## Details
 
 Monte-Carlo samples are generated from a
-[`distribution`](https://github.com/protected-species-management/om/reference/distribution-class.md)
+[`distribution`](https://github.com/protected-species-management/operating-model/om/reference/distribution-class.md)
 class object. If values are stored in the object then these are sampled
 non-parameterically (with replacement if necessary). If values are not
 present, and `pars` and `density` are specified in the object, then
@@ -46,7 +46,7 @@ parametric sampling is performed.
 
 ## See also
 
-[`distribution`](https://github.com/protected-species-management/om/reference/distribution-class.md)
+[`distribution`](https://github.com/protected-species-management/operating-model/om/reference/distribution-class.md)
 
 ## Examples
 

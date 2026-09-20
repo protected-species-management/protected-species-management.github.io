@@ -1,7 +1,7 @@
 # Hector's dolphin
 
 An
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 class object containing life-history data and reference points for
 Hector's dolphin assuming that the depletion at Maximum Net Productivity
 Level is \\D\_{MNPL} = 0.6\\.
@@ -15,9 +15,9 @@ om_hdo
 ## Format
 
 See
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md),
-[`pars`](https://github.com/protected-species-management/om/reference/targets.md),
-[`distribution`](https://github.com/protected-species-management/om/reference/distribution-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md),
+[`pars`](https://github.com/protected-species-management/operating-model/om/reference/targets.md),
+[`distribution`](https://github.com/protected-species-management/operating-model/om/reference/distribution-class.md)
 
 ## Author
 

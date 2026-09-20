@@ -1,7 +1,7 @@
 # Load reference point targets.
 
 Load management targets into
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 class object. These can be the Maximum Net Productivity Level (MNPL) and
 corresponding harvest rate and depletion values.
 
@@ -37,5 +37,5 @@ outcome of the population projection.
 ## See also
 
 See
-[`rp`](https://github.com/protected-species-management/om/reference/rp.md)
+[`rp`](https://github.com/protected-species-management/operating-model/om/reference/rp.md)
 for reference point estimation.

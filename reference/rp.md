@@ -45,11 +45,11 @@ rp(object, stochastic, time, iterations, verbose = FALSE)
 ## Note
 
 This function would typically be preceded by a call to
-[`shape`](https://github.com/protected-species-management/om/reference/shape.md),
+[`shape`](https://github.com/protected-species-management/operating-model/om/reference/shape.md),
 which estimates the shape parameter necessary for definition of the
 production function.
 
 ## See also
 
-[`shape`](https://github.com/protected-species-management/om/reference/shape.md)
-[`targets`](https://github.com/protected-species-management/om/reference/targets.md)
+[`shape`](https://github.com/protected-species-management/operating-model/om/reference/shape.md)
+[`targets`](https://github.com/protected-species-management/operating-model/om/reference/targets.md)

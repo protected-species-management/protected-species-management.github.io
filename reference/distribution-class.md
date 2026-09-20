@@ -92,7 +92,7 @@ adding or removing values.
 
 ## See also
 
-[`sample`](https://github.com/protected-species-management/om/reference/sample.md),
+[`sample`](https://github.com/protected-species-management/operating-model/om/reference/sample.md),
 [`summary`](https://rdrr.io/r/base/summary.html),
 [`plot`](https://rdrr.io/r/graphics/plot.default.html)
 

@@ -1,7 +1,7 @@
 # Access slots within an `om` object.
 
 Access information stored in
-[`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+[`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
 object. The same information can be accessed in raw format using
 `object@<function>`.
 
@@ -36,7 +36,7 @@ numbers(object)
 
 - object:
 
-  [`om`](https://github.com/protected-species-management/om/reference/om-class.md)
+  [`om`](https://github.com/protected-species-management/operating-model/om/reference/om-class.md)
   class object.
 
 - ...:
@@ -46,6 +46,7 @@ numbers(object)
 ## Examples
 
 ``` r
+
 # error messages are
 # generated when applied
 # to an empty object
@@ -188,9 +189,7 @@ pst(om_hdo)
 #> ✖ '<object>@pst' is empty - run 'pdyn()'
 pst(pdyn(om_hdo))
 #> ⠙ Projecting dynamics
-#> ⠹ Projecting dynamics ...
-#> ⠸ Projecting dynamics ...
-#> ✔ Projected dynamics [433ms]
+#> ✔ Projected dynamics [99ms]
 #> 
 #> # A tibble: 301 × 4
 #>    sample iteration  time  value
@@ -210,8 +209,7 @@ diagnostics(om_hdo)
 #> ✖ '<object>@diagnostics' is empty - run 'pdyn()'
 diagnostics(pdyn(om_hdo))
 #> ⠙ Projecting dynamics
-#> ⠹ Projecting dynamics ...
-#> ✔ Projected dynamics [144ms]
+#> ✔ Projected dynamics [35ms]
 #> 
 #> $captures
 #> # A tibble: 300 × 4

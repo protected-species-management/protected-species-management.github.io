@@ -59,19 +59,19 @@ om(
 - `settings`:
 
   list of settings used to for reference point evaluation with
-  [`shape`](https://github.com/protected-species-management/om/reference/shape.md)
+  [`shape`](https://github.com/protected-species-management/operating-model/om/reference/shape.md)
   and
-  [`rp`](https://github.com/protected-species-management/om/reference/rp.md).
+  [`rp`](https://github.com/protected-species-management/operating-model/om/reference/rp.md).
 
 - `pars`:
 
   list of input parameter distributions used by the operating model. See
-  [`load_pars`](https://github.com/protected-species-management/om/reference/load_pars.md).
+  [`load_pars`](https://github.com/protected-species-management/operating-model/om/reference/load_pars.md).
 
 - `shape`:
 
   numeric vector of shape values estimated or specified using
-  [`shape`](https://github.com/protected-species-management/om/reference/shape.md).
+  [`shape`](https://github.com/protected-species-management/operating-model/om/reference/shape.md).
 
 - `harvest_rate`:
 
@@ -86,7 +86,7 @@ om(
 
   list containing `capture`, `depletion` and `harvest_rate` target
   reference points estimated using
-  [`rp`](https://github.com/protected-species-management/om/reference/rp.md).
+  [`rp`](https://github.com/protected-species-management/operating-model/om/reference/rp.md).
 
 - `objectives`:
 
