@@ -189,7 +189,7 @@ pst(om_hdo)
 #> ✖ '<object>@pst' is empty - run 'pdyn()'
 pst(pdyn(om_hdo))
 #> ⠙ Projecting dynamics
-#> ✔ Projected dynamics [90ms]
+#> ✔ Projected dynamics [88ms]
 #> 
 #> # A tibble: 301 × 4
 #>    sample iteration  time  value
@@ -209,7 +209,7 @@ diagnostics(om_hdo)
 #> ✖ '<object>@diagnostics' is empty - run 'pdyn()'
 diagnostics(pdyn(om_hdo))
 #> ⠙ Projecting dynamics
-#> ✔ Projected dynamics [30ms]
+#> ✔ Projected dynamics [28ms]
 #> 
 #> $captures
 #> # A tibble: 300 × 4

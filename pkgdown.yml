@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   om_demo: om_demo.html
   om_hdo: om_hdo.html
-last_built: 2026-09-20T14:03Z
+last_built: 2026-09-20T14:34Z
 urls:
   reference: https://github.com/protected-species-management/operating-model/om/reference
   article: https://github.com/protected-species-management/operating-model/om/articles

@@ -169,9 +169,10 @@ ggplot() + geom_line(data = dfr0, aes(x = depletion, y = captures, col = sample)
 
 ![](fig/om-examples-unnamed-chunk-13-2.png)
 
-When performing a stochastic projection, uncertainty is a consequence of
-the life-history parameter distributions only. By default, projections
-take place assuming a harvest rate equal the harvest rate at MNPL:
+When performing a deterministic projection, uncertainty is a consequence
+of the life-history parameter distributions only. By default,
+projections take place assuming a harvest rate equal the harvest rate at
+MNPL:
 
 ``` r
 
@@ -180,7 +181,7 @@ om_object0@harvest_rate
 #> {
 #>     ifelse(all(is.na(object@targets$harvest_rate)), 0, object@targets$harvest_rate[i])
 #> }
-#> <environment: 0x563327595b00>
+#> <environment: 0x55cc3341f730>
 ```
 
 ``` r

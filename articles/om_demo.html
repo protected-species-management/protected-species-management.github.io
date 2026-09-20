@@ -185,17 +185,17 @@ surplus production functions being assumed by the model:</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">depletion</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dfr1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depletion</span>,</span>
 <span>    y <span class="op">=</span> <span class="va">captures</span>, col <span class="op">=</span> <span class="va">sample</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fig/om-examples-unnamed-chunk-13-2.png" class="r-plt" alt="" width="576"></p>
-<p>When performing a stochastic projection, uncertainty is a consequence
-of the life-history parameter distributions only. By default,
-projections take place assuming a harvest rate equal the harvest rate at
-MNPL:</p>
+<p>When performing a deterministic projection, uncertainty is a
+consequence of the life-history parameter distributions only. By
+default, projections take place assuming a harvest rate equal the
+harvest rate at MNPL:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">om_object0</span><span class="op">@</span><span class="va">harvest_rate</span></span>
 <span><span class="co">#&gt; function (object, numbers, selectivity, pst, i) </span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;     ifelse(all(is.na(object@targets$harvest_rate)), 0, object@targets$harvest_rate[i])</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x563327595b00&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;environment: 0x55cc3341f730&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># population dynamics</span></span>
 <span><span class="va">om_object0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdyn.html">pdyn</a></span><span class="op">(</span><span class="va">om_object0</span>, stochastic <span class="op">=</span> <span class="cn">FALSE</span>, initial_depletion <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
